@@ -1,13 +1,47 @@
 var request = require("request");
 var nodeArgs = process.argv;
 let action = process.argv[2];
+var Twitter = require('twitter');
+
+
+
+
+
+//var screen_name = jBradw;
+var myTweets = function (){
+
+ 
+var client = new Twitter({
+  consumer_key: 'iQeQtZRBKxHNql7CDbYy8kpYM',
+  consumer_secret: 'p8nge3Um8CqUS35TVnVPkKTpH34MdszqhLOpN6jm5kp76t3ZPO',
+  access_token_key: '941384945162997761-GPIUJva36RBxn53lGd3sEejU4dCjGUn',
+  access_token_secret: 'InYO5XrezQzrrWMibunM47wpuC1seIIwglqGSVNeJMNGS'
+});
+ 
+var params = {screen_name: '@jBradw1'};
+client.get('statuses/user_timeline', params, function(error, tweets, response) {
+  // console.log(' look params',params)
+  if (!error) {
+
+    for (var i = 0; i < tweets.length; i++) {
+      console.log(tweets[i].text)
+    }
+  }
+  else {console.log("this error", error);}
+});
+
+};
+myTweets();
+
+
+
+
+
+
 
 
 if (action === "movie-this"){
-	//movie();
-
-	
-
+	//movie();  for some reason i cant run this in a function. I need to follow-up with instructors
 
 //movie = ()=> {
 
@@ -33,6 +67,9 @@ if (action === "movie-this"){
 		}
 	});
 //	}
+	}
+	else if (action === "my-tweets"){
+		myTweets();
 	}
 
 	//movie();
