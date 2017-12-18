@@ -2,31 +2,35 @@ var request = require("request");
 var nodeArgs = process.argv;
 let action = process.argv[2];
 var Twitter = require('twitter');
-let value = process.argv[3];
 var Spotify = require("node-spotify-api");
 
-////JSON.parse(body).Released
-//
-//
-var spotify = new Spotify({
- id: "21e32b9b23b044ada953c89c4409b4cd",
- secret: "46433a5a9e4747d489e9e1f3bc13f778"
-});
-// 
-spotify.search({ type: 'track', query: "eli's coming", limit: 1 }, function(err, data) {
- if (err) {
-   return console.log('Error occurred: ' + err);
- }
-	console.log(data.tracks.items[0].album.name);
-	//console.log(JSON.parse(data));
-	//console.log (JSON.stringify(data)); 
-	//console.log(JSON.stringify(data).tracks);
-	//console.log("This is my test" + JSON.parse(choose).tracks);	
-})
-//
-//
 
+var song = function() {
+	 musicName = "";
+	for (var i = 3; i < nodeArgs.length; i++) {
+		if (i > 3 && i < nodeArgs.length) {
+		musicName = musicName + "+" + nodeArgs[i];
+		}
+		else {
+		musicName += nodeArgs[i];
+	}
+	}
+	var spotify = new Spotify({
+	id: "21e32b9b23b044ada953c89c4409b4cd",
+	secret: "46433a5a9e4747d489e9e1f3bc13f778"
+	});
+	spotify.search({ type: 'track', query: musicName, limit: 1 }, function(err, data) {
+	if (err) {
+	return console.log('Oops!  Try again.  Did you enter the music? ' + err);
 
+	}
+	console.log(JSON.stringify(data, null, 2));
+	console.log("The song is " + data.tracks.items[0].name);
+	console.log("The album is " + data.tracks.items[0].album.name);	
+	//console.log("The artist is " + data.tracks.items[0].album.artists.name[2]);
+	})
+};
+	
 var myTweets = function() {
 	var client = new Twitter({
 	  consumer_key: 'iQeQtZRBKxHNql7CDbYy8kpYM',
@@ -44,55 +48,66 @@ var myTweets = function() {
 	  }
 	  else {console.log("this error", error);}
 	});
-  };
-//myTweets();
-
-
-
-
-
-
-
-
-
-	//movie();  for some reason i cant run this in a function. I need to follow-up with instructors
-
-//movie = ()=> {
+ };
 
 var movie = function(){
-
- movieName = "";
-	for (var i = 3; i < nodeArgs.length; i++) {
-		if (i > 3 && i < nodeArgs.length) {
-		movieName = movieName + "+" + nodeArgs[i];
-	}
-	else {
-	movieName += nodeArgs[i];
-	}
-	}
+ 	movieName = "";
+		for (var i = 3; i < nodeArgs.length; i++) {
+			if (i > 3 && i < nodeArgs.length) {
+				movieName = movieName + "+" + nodeArgs[i];
+			}
+			else if (i = 3){movieName = nodeArgs[3]}
+			else {movieName = "mr nobody"}
+			//}
+		}
 	request("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
+		if (error){console.log("Yikes!  Something went wrong.  Please, try again. ");}
 		if (!error && response.statusCode === 200) {
-
-	console.log("The movie came out in " + JSON.parse(body).Released);
-	console.log("The IMDB rating of the movie is " + JSON.parse(body).Ratings[0].Value);
-	console.log("The Rotten Tomatoes Rating of the movie is "+ JSON.parse(body).Ratings[1].Value)
-	console.log("The movie was produced in " + JSON.parse(body).Country);
-	console.log("The language of the movie is " + JSON.parse(body).Language);
-	console.log("The plot of the movie is " + JSON.parse(body).Plot);
-	console.log("The actors in the movie are " + JSON.parse(body).Actors)
+			console.log("The movie came out in " + JSON.parse(body).Released);
+			console.log("The IMDB rating of the movie is " + JSON.parse(body).Ratings[0].Value);
+			console.log("The Rotten Tomatoes Rating of the movie is "+ JSON.parse(body).Ratings[1].Value)
+			console.log("The movie was produced in " + JSON.parse(body).Country);
+			console.log("The language of the movie is " + JSON.parse(body).Language);
+			console.log("The plot of the movie is " + JSON.parse(body).Plot);
+			console.log("The actors in the movie are " + JSON.parse(body).Actors)
 		}
 	});
-	}
+}
 	if (action === "movie-this"){
 		movie();
 	}
 	else if (action === "my-tweets"){
 		myTweets();
 	}
+	else if (action === "spotify-this-song"){
+		song();
+	}
 
-	//movie();
+module.exports = function() {
+	 musicName = "";
+	for (var i = 3; i < nodeArgs.length; i++) {
+		if (i > 3 && i < nodeArgs.length) {
+		musicName = musicName + "+" + nodeArgs[i];
+		}
+		else {
+		musicName += nodeArgs[i];
+	}
+	}
+	var spotify = new Spotify({
+	id: "21e32b9b23b044ada953c89c4409b4cd",
+	secret: "46433a5a9e4747d489e9e1f3bc13f778"
+	});
+	spotify.search({ type: 'track', query: musicName, limit: 1 }, function(err, data) {
+	if (err) {
+	return console.log('Oops!  Try again.  Did you enter the music? ' + err);
 
-
+	}
+	console.log(JSON.stringify(data, null, 2));
+	console.log("The song is " + data.tracks.items[0].name);
+	console.log("The album is " + data.tracks.items[0].album.name);	
+	//console.log("The artist is " + data.tracks.items[0].album.artists.name[2]);
+	})
+};
 
 
 
