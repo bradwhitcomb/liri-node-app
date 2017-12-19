@@ -102,7 +102,7 @@ module.exports = function() {
 	return console.log('Oops!  Try again.  Did you enter the music? ' + err);
 
 	}
-	console.log(JSON.stringify(data, null, 2));
+	
 	console.log("The song is " + data.tracks.items[0].name);
 	console.log("The album is " + data.tracks.items[0].album.name);	
 	//console.log("The artist is " + data.tracks.items[0].album.artists.name[2]);
